@@ -30,49 +30,50 @@ export default function LoginPage() {
   }
 
   return (
-    <>
-    <div>
-    <Image src="/images/logo.png" width="100" height="120" alt="Logo" />
-    </div>
-    <Card className="w-full max-w-md">
-        <CardHeader className=" text-center">
-            <CardTitle>Bon retour parmi nous sur Otakushop !!!</CardTitle>
-            <CardDescription>Bon retour dès aujourd'hui <br/>Profiter des avantages d'une expérience d'achat personnalisée Otaku. Amusez-vous!!</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form className="flex flex-col gap-3" onSubmit={form.handleSubmit(handleSubmit)}>
-              <FormField control={form.control} name="email"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="email" placeholder="" />
-                    </FormControl>
-                    <CardDescription />
-                    <FormMessage/>
-                  </FormItem>
-                )}/>
-                <FormField control={form.control} name="password"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Mot de passe</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="password" placeholder="" />
-                    </FormControl>
-                    <CardDescription />
-                    <FormMessage/>
-                  </FormItem>
-                )}/>
-            </form>
-          </Form>
-        </CardContent>
-        <CardFooter className="flex-col text-center gap-4">
-           <small> Pas de compte ? <Link className="text-red-700 underline" href="/signup">créer un compte </Link></small>
-            <p className="text-sm">En continuant, vous acceptez les conditions d'utilisation <br/> d'otaku <Link href="#">Termes et conditions</Link></p>
-            <Button size={"lg"} className="w-full" type="submit">Se connecter</Button>
-        </CardFooter>
-    </Card>
+    <>  
+      <div>
+      <Image src="/images/logo.png" width="100" height="120" alt="Logo" />
+      </div>
+      <Card className="w-full max-w-md">
+          <CardHeader className=" text-center">
+              <CardTitle>Bon retour parmi nous sur Otakushop !!!</CardTitle>
+              <CardDescription>Bon retour dès aujourd'hui <br/>Profiter des avantages d'une expérience d'achat personnalisée Otaku. Amusez-vous!!</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form className="flex flex-col gap-3" onSubmit={form.handleSubmit(handleSubmit)}>
+                <FormField control={form.control} name="email"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="email" placeholder="" />
+                      </FormControl>
+                      <CardDescription />
+                      <FormMessage/>
+                    </FormItem>
+                  )}/>
+                  <FormField control={form.control} name="password"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Mot de passe</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="password" placeholder="" />
+                      </FormControl>
+                      <CardDescription />
+                      <FormMessage/>
+                    </FormItem>
+                  )}/>
+              </form>
+            </Form>
+          </CardContent>
+          <CardFooter className="flex-col text-center gap-4">
+            <small> Pas de compte ? <Link className="text-red-700 underline" href="/signup">créer un compte </Link></small>
+              <p className="text-sm">En continuant, vous acceptez les conditions d'utilisation <br/> d'otaku <Link href="#">Termes et conditions</Link></p>
+              <Button size={"lg"} className="w-full" type="submit">Se connecter</Button>
+          </CardFooter>
+      </Card>
+
     </>
   )
 }
