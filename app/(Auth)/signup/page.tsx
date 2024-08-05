@@ -1,12 +1,14 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { toDate } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -60,6 +62,9 @@ export default function SignupPage() {
   }
 
   const accountType= form.watch("account_type")
+
+  const dobFromDate = new Date()
+  dobFromDate.setFullYear(dobFromDate.getFullYear()-120)
 
   return (
     <>
@@ -141,8 +146,12 @@ export default function SignupPage() {
 
                           </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent>
-                          
+                        <PopoverContent align="start" className="w-auto p-0">
+                          <Calendar mode="single" defaultMonth={field.value} 
+                          selected={field.value} onSelect={field.onChange}
+                          fixedWeeks weekStartsOn={1}
+                          fromDate={new Date()}/>
+
                         </PopoverContent>
                       </Popover>
                       <CardDescription />
