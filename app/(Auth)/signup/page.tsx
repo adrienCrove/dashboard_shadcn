@@ -5,10 +5,11 @@ import { Calendar } from "@/components/ui/calendar"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { PasswordInput } from "@/components/ui/password-input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { toDate } from "date-fns"
+import { format, toDate } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -17,7 +18,13 @@ import * as z from 'zod'
 
 const formSchema = z.object({
   email: z.string().email().min(1, { message: 'Email is required' }),
-  password: z.string().min(1, { message: 'Password is required' }),
+  password: z
+  .string()
+  .min(8, { message: 'Le mot de passe doit au moins contenir 8 caractères' })
+  .refine((password)=>{
+    return /^(?=.*[!@#$%^&*])(?=.*[A-Z]).*$/.test(password);
+  }, "Mot de passe doit contenir au moins une lettre en majuscule et un caractère spécial"),
+  passwordConfirm: z.string(),
   account_type:z.enum(["Personal","Company"]),
   company_name: z.string().optional(),
   Employee_number:z.coerce.number().optional(),
@@ -31,6 +38,14 @@ const formSchema = z.object({
     return date <= Minor;
   }, "Vous devez avoir 18 ans"),
 }).superRefine((data, ctx) =>{
+
+    if (data.password!==data.passwordConfirm){
+      ctx.addIssue({
+        code:z.ZodIssueCode.custom,
+        path: ["passwordConfirm"],
+        message: "Les mots de passe ne correspondent pas"
+      })
+    }
     if(data.account_type==="Company" && !data.company_name){
       ctx.addIssue({
         code:z.ZodIssueCode.custom,
@@ -140,7 +155,11 @@ export default function SignupPage() {
                         <PopoverTrigger asChild>
                           <FormControl> 
                             <Button variant={"outline"} className="normal-case flex justify-between ">
-                              <span>Choisir une date</span>                            
+                              {!! field.value ?(
+                                format(field.value, "PPP")
+                              ):(
+                                <span>Choisir une date</span> 
+                              )}                                                        
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>                       
 
@@ -150,7 +169,7 @@ export default function SignupPage() {
                           <Calendar mode="single" defaultMonth={field.value} 
                           selected={field.value} onSelect={field.onChange}
                           fixedWeeks weekStartsOn={1}
-                          fromDate={new Date()}/>
+                          fromDate={new Date()} captionLayout="dropdown-buttons"/>
 
                         </PopoverContent>
                       </Popover>
@@ -164,6 +183,17 @@ export default function SignupPage() {
                     <FormLabel>Mot de passe</FormLabel>
                     <FormControl>
                       <Input {...field} type="password" placeholder="" />
+                    </FormControl>
+                    <CardDescription />
+                    <FormMessage/>
+                  </FormItem>
+                )}/>
+                <FormField control={form.control} name="passwordConfirm"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel>Confirmation du Mot de passe</FormLabel>
+                    <FormControl>
+                      <PasswordInput {...field} type="password" placeholder="" />
                     </FormControl>
                     <CardDescription />
                     <FormMessage/>
